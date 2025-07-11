@@ -11,12 +11,13 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
+    sqlite3 \
+    libsqlite3-dev \
     zip \
-    unzip \
-    sqlite3
+    unzip
 
 # Install PHP extensions required by Laravel
-RUN docker-php-ext-install pdo_sqlite pdo_mysql mbstring exif pcntl bcmath gd
+RUN docker-php-ext-install pdo_mysql pdo_sqlite mbstring exif pcntl bcmath gd
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
