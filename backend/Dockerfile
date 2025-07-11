@@ -12,17 +12,21 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     zip \
-    unzip
+    unzip \
+    sqlite3
 
 # Install PHP extensions required by Laravel
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+RUN docker-php-ext-install pdo_sqlite pdo_mysql mbstring exif pcntl bcmath gd
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copy setup script
+# Copy setup script and database files
 COPY setup.sh /usr/local/bin/setup.sh
+COPY database/ /var/www/html/database/
 RUN chmod +x /usr/local/bin/setup.sh
+RUN chmod +x /var/www/html/database/init_database.sh
+RUN chmod +x /var/www/html/database/create_game_session.sh
 
 # Set permissions for storage and bootstrap cache
 RUN mkdir -p storage bootstrap/cache && \

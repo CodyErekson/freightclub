@@ -18,5 +18,9 @@ fi
 # Install additional dependencies for MQTT
 composer require php-mqtt/client
 
+# Initialize the database
+echo "Initializing database..."
+/var/www/html/database/init_database.sh
+
 # Start PHP-FPM
 php-fpm 
