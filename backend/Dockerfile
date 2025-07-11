@@ -22,17 +22,22 @@ RUN docker-php-ext-install pdo_mysql pdo_sqlite mbstring exif pcntl bcmath gd
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copy setup script and database files
+# Copy setup script
 COPY setup.sh /usr/local/bin/setup.sh
-COPY database/ /var/www/html/database/
 RUN chmod +x /usr/local/bin/setup.sh
-RUN chmod +x /var/www/html/database/init_database.sh
-RUN chmod +x /var/www/html/database/create_game_session.sh
+
+# Create a user with the same UID/GID as the host user
+ARG UID=1000
+ARG GID=1000
+RUN groupadd -g $GID appuser && useradd -u $UID -g $GID -m appuser
 
 # Set permissions for storage and bootstrap cache
 RUN mkdir -p storage bootstrap/cache && \
-    chown -R www-data:www-data storage bootstrap/cache && \
+    chown -R appuser:appuser storage bootstrap/cache && \
     chmod -R 775 storage bootstrap/cache
+
+# Switch to the appuser
+USER appuser
 
 # Expose port 9000 and start setup script
 EXPOSE 9000
