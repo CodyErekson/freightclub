@@ -81,9 +81,16 @@
 </head>
 <body>
     <div class="container">
-        <h1>Commodities Sprite Sheet Analyzer</h1>
+        <h1>Sprite Sheet Analyzer</h1>
+        <p>Choose a sprite sheet to analyze and extract individual sprites.</p>
         
         <div class="controls">
+            <select id="spriteSheetSelect" onchange="onSpriteSheetChange()">
+                <option value="">Choose a sprite sheet...</option>
+                <option value="/backend/public/images/commodities/commodities.png">Commodities</option>
+                <option value="/backend/public/images/cities/cities.png">Cities</option>
+                <option value="/backend/public/images/ui/ui.png">UI Elements</option>
+            </select>
             <button onclick="loadSpriteSheet()">Load Sprite Sheet</button>
             <button onclick="autoDetectSprites()">Auto-Detect Sprites</button>
             <button onclick="exportCoordinates()">Export Coordinates</button>
@@ -110,15 +117,40 @@
             'processed_foods', 'ores', 'precious_metals', 'steel', 'mining_equipment', 'anonymous'
         ];
 
+        function onSpriteSheetChange() {
+            const select = document.getElementById('spriteSheetSelect');
+            const selectedPath = select.value;
+            if (selectedPath) {
+                console.log('Selected sprite sheet:', selectedPath);
+            }
+        }
+
         function loadSpriteSheet() {
+            const select = document.getElementById('spriteSheetSelect');
+            const selectedPath = select.value;
+            
+            if (!selectedPath) {
+                alert('Please select a sprite sheet first');
+                return;
+            }
+            
             spriteSheet = new Image();
             spriteSheet.onload = function() {
                 canvas.width = spriteSheet.width;
                 canvas.height = spriteSheet.height;
                 ctx.drawImage(spriteSheet, 0, 0);
                 console.log('Sprite sheet loaded:', spriteSheet.width, 'x', spriteSheet.height);
+                
+                // Clear any previous selections
+                selectedSprites = [];
+                document.getElementById('spriteInfo').innerHTML = '';
+                document.getElementById('exportCode').style.display = 'none';
             };
-            spriteSheet.src = '/backend/public/images/commodities/commodities.png';
+            spriteSheet.onerror = function() {
+                alert('Failed to load sprite sheet. Please check the path: ' + selectedPath);
+                console.error('Failed to load sprite sheet from:', selectedPath);
+            };
+            spriteSheet.src = selectedPath;
         }
 
         function autoDetectSprites() {
@@ -271,8 +303,8 @@ ${selectedSprites.map(sprite =>
             isSelecting = false;
         });
 
-        // Load sprite sheet on page load
-        window.addEventListener('load', loadSpriteSheet);
+        // Don't auto-load on page load anymore
+        // window.addEventListener('load', loadSpriteSheet);
     </script>
 </body>
 </html> 
