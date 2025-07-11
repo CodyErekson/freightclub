@@ -29,3 +29,22 @@ yarn-error.log*
 # Mosquitto data
 /mosquitto/data/
 /mosquitto/log/
+
+# Laravel specific
+/backend/vendor/
+/backend/.env
+/backend/.env.backup
+/backend/.phpunit.result.cache
+/backend/homestead.json
+/backend/homestead.yaml
+/backend/auth.json
+/backend/npm-debug.log
+/backend/yarn-error.log
+/backend/.idea
+/backend/.vscode
+/backend/storage/*.key
+/backend/storage/logs/*
+/backend/storage/framework/cache/*
+/backend/storage/framework/sessions/*
+/backend/storage/framework/views/*
+/backend/bootstrap/cache/*

@@ -20,17 +20,15 @@ RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Copy setup script
+COPY setup.sh /usr/local/bin/setup.sh
+RUN chmod +x /usr/local/bin/setup.sh
+
 # Set permissions for storage and bootstrap cache
-# The initial Laravel files don't exist yet, so we'll create the directories
-# and permission them. The container will run as root initially to install,
-# then we switch to a non-root user.
 RUN mkdir -p storage bootstrap/cache && \
     chown -R www-data:www-data storage bootstrap/cache && \
     chmod -R 775 storage bootstrap/cache
 
-# Change user to www-data
-USER www-data
-
-# Expose port 9000 and start php-fpm server
+# Expose port 9000 and start setup script
 EXPOSE 9000
-CMD ["php-fpm"] 
+CMD ["/usr/local/bin/setup.sh"] 
