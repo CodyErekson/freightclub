@@ -1,0 +1,23 @@
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: #282c34;
+  padding: 20px;
+  color: white;
+  border-bottom: 2px solid #61dafb;
+}
+
+main {
+  padding: 20px;
+}
+
+pre {
+  background-color: #1e1e1e;
+  padding: 15px;
+  border-radius: 5px;
+  text-align: left;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+} 
