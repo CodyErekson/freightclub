@@ -15,7 +15,7 @@ class SpriteAtlas {
    * @param {string} imagePath - Path to the sprite sheet
    * @returns {Promise} Promise that resolves when image is loaded
    */
-  async loadSpritesheet(imagePath = '/images/commodities/commodities.png') {
+  async loadSpritesheet(imagePath = 'http://localhost:8000/images/commodities/commodities.png') {
     return new Promise((resolve, reject) => {
       this.spritesheet = new Image();
       this.spritesheet.onload = () => {
