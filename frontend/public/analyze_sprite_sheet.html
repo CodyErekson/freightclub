@@ -93,6 +93,7 @@
             </select>
             <button onclick="loadSpriteSheet()">Load Sprite Sheet</button>
             <button onclick="autoDetectSprites()">Auto-Detect Sprites</button>
+            <button onclick="adjustSprite()">Adjust Selected Sprite</button>
             <button onclick="exportCoordinates()">Export Coordinates</button>
             <button onclick="clearSelection()">Clear Selection</button>
         </div>
@@ -159,11 +160,17 @@
                 return;
             }
 
-            const spriteSize = 32; // Assuming 32x32 sprites
-            const spritesPerRow = Math.floor(spriteSheet.width / spriteSize);
-            const spritesPerCol = Math.floor(spriteSheet.height / spriteSize);
-            
+            // Clear previous selections
             selectedSprites = [];
+            
+            // Add a button to manually adjust sprite size
+            const spriteSize = prompt('Enter sprite size (default: 32):', '32') || 32;
+            const spacing = prompt('Enter spacing between sprites (default: 0):', '0') || 0;
+            
+            const spritesPerRow = Math.floor(spriteSheet.width / (parseInt(spriteSize) + parseInt(spacing)));
+            const spritesPerCol = Math.floor(spriteSheet.height / (parseInt(spriteSize) + parseInt(spacing)));
+            
+            console.log(`Detected ${spritesPerRow} sprites per row, ${spritesPerCol} rows`);
             
             for (let row = 0; row < spritesPerCol; row++) {
                 for (let col = 0; col < spritesPerRow; col++) {
@@ -171,10 +178,10 @@
                     if (spriteIndex < spriteNames.length) {
                         selectedSprites.push({
                             name: spriteNames[spriteIndex],
-                            x: col * spriteSize,
-                            y: row * spriteSize,
-                            width: spriteSize,
-                            height: spriteSize
+                            x: col * (parseInt(spriteSize) + parseInt(spacing)),
+                            y: row * (parseInt(spriteSize) + parseInt(spacing)),
+                            width: parseInt(spriteSize),
+                            height: parseInt(spriteSize)
                         });
                     }
                 }
@@ -246,6 +253,36 @@ ${selectedSprites.map(sprite =>
             const exportDiv = document.getElementById('exportCode');
             exportDiv.textContent = code;
             exportDiv.style.display = 'block';
+        }
+
+        function adjustSprite() {
+            if (selectedSprites.length === 0) {
+                alert('No sprites selected. Please auto-detect or manually select sprites first.');
+                return;
+            }
+            
+            const spriteIndex = prompt('Enter sprite index to adjust (0-' + (selectedSprites.length - 1) + '):', '0');
+            if (spriteIndex === null) return;
+            
+            const index = parseInt(spriteIndex);
+            if (index < 0 || index >= selectedSprites.length) {
+                alert('Invalid sprite index');
+                return;
+            }
+            
+            const sprite = selectedSprites[index];
+            const newX = prompt('Current X: ' + sprite.x + '. Enter new X:', sprite.x);
+            const newY = prompt('Current Y: ' + sprite.y + '. Enter new Y:', sprite.y);
+            const newWidth = prompt('Current Width: ' + sprite.width + '. Enter new Width:', sprite.width);
+            const newHeight = prompt('Current Height: ' + sprite.height + '. Enter new Height:', sprite.height);
+            
+            if (newX !== null) sprite.x = parseInt(newX);
+            if (newY !== null) sprite.y = parseInt(newY);
+            if (newWidth !== null) sprite.width = parseInt(newWidth);
+            if (newHeight !== null) sprite.height = parseInt(newHeight);
+            
+            drawSelection();
+            updateSpriteInfo();
         }
 
         function clearSelection() {
