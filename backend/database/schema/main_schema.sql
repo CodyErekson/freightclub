@@ -11,8 +11,10 @@ CREATE TABLE IF NOT EXISTS configurations (
 CREATE TABLE IF NOT EXISTS cities (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL UNIQUE,
-    primary_export TEXT,
-    primary_import TEXT
+    primary_export INTEGER,
+    primary_import INTEGER,
+    FOREIGN KEY (primary_export) REFERENCES commodities(id) ON DELETE SET NULL,
+    FOREIGN KEY (primary_import) REFERENCES commodities(id) ON DELETE SET NULL
 );
 
 -- Commodities table for tradeable goods
@@ -62,6 +64,8 @@ CREATE TABLE IF NOT EXISTS city_distances (
 
 -- Create indexes for better performance
 CREATE INDEX IF NOT EXISTS idx_cities_name ON cities(name);
+CREATE INDEX IF NOT EXISTS idx_cities_primary_export ON cities(primary_export);
+CREATE INDEX IF NOT EXISTS idx_cities_primary_import ON cities(primary_import);
 CREATE INDEX IF NOT EXISTS idx_commodities_name ON commodities(name);
 CREATE INDEX IF NOT EXISTS idx_traders_city_id ON traders(city_id);
 CREATE INDEX IF NOT EXISTS idx_events_event_type_id ON events(event_type_id);

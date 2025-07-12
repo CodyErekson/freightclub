@@ -76,8 +76,8 @@ The main database is automatically created when the Docker container starts.
 #### cities
 - `id` (INTEGER, PRIMARY KEY): Unique city identifier
 - `name` (TEXT, UNIQUE): City name
-- `primary_export` (TEXT): Main export commodity
-- `primary_import` (TEXT): Main import commodity
+- `primary_export` (INTEGER, FOREIGN KEY): Main export commodity (references commodities.id)
+- `primary_import` (INTEGER, FOREIGN KEY): Main import commodity (references commodities.id)
 
 #### commodities
 - `id` (INTEGER, PRIMARY KEY): Unique commodity identifier

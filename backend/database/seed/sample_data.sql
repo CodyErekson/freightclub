@@ -12,19 +12,19 @@ INSERT OR REPLACE INTO configurations (name, value) VALUES
 
 -- Insert sample cities
 INSERT OR REPLACE INTO cities (id, name, primary_export, primary_import) VALUES
-(1, 'Rotterdam', 'Plastics', 'Petroleum'),
-(2, 'Hamburg', 'Industrial Machinery', 'Plastics'),
-(3, 'Shanghai', 'Consumer Electronics', 'Industrial Machinery'),
-(4, 'Busan', 'Automobiles', 'Consumer Electronics'),
-(5, 'Los Angeles', 'Petroleum', 'Automobiles'),
-(6, 'Houston', 'Agricultural Goods', 'Fertilizer & Chemicals'),
-(7, 'Santos', 'Sugar', 'Agricultural Goods'),
-(8, 'Singapore', 'Processed Foods', 'Sugar'),
-(9, 'New York', 'Fertilizer & Chemicals', 'Processed Foods'),
-(10, 'Dubai', 'Ores', 'Mining Equipment'),
-(11, 'Mumbai', 'Precious Metals', 'Ores'),
-(12, 'Antwerp', 'Steel', 'Precious Metals'),
-(13, 'Melbourne', 'Mining Equipment', 'Steel');
+(1, 'Rotterdam', 2, 1),    -- Plastics, Petroleum
+(2, 'Hamburg', 3, 2),      -- Industrial Machinery, Plastics
+(3, 'Shanghai', 4, 3),     -- Consumer Electronics, Industrial Machinery
+(4, 'Busan', 5, 4),        -- Automobiles, Consumer Electronics
+(5, 'Los Angeles', 1, 5),  -- Petroleum, Automobiles
+(6, 'Houston', 6, 7),      -- Agricultural Goods, Fertilizer
+(7, 'Santos', 8, 6),       -- Sugar, Agricultural Goods
+(8, 'Singapore', 9, 8),    -- Processed Foods, Sugar
+(9, 'New York', 7, 9),     -- Fertilizer, Processed Foods
+(10, 'Dubai', 10, 13),     -- Ores, Mining Equipment
+(11, 'Mumbai', 11, 10),    -- Precious Metals, Ores
+(12, 'Antwerp', 12, 11),   -- Steel, Precious Metals
+(13, 'Melbourne', 13, 12); -- Mining Equipment, Steel
 
 -- Insert sample commodities
 INSERT OR REPLACE INTO commodities (id, name, icon, base_price) VALUES
@@ -34,7 +34,7 @@ INSERT OR REPLACE INTO commodities (id, name, icon, base_price) VALUES
 (4, 'Consumer Electronics', 'anonymous.png', 150.00),
 (5, 'Automobiles', 'anonymous.png', 250.00),
 (6, 'Agricultural Goods', 'anonymous.png', 35.00),
-(7, 'Fertilizer & Chemicals', 'anonymous.png', 40.00),
+(7, 'Fertilizer', 'anonymous.png', 40.00),
 (8, 'Sugar', 'anonymous.png', 25.00),
 (9, 'Processed Foods', 'anonymous.png', 50.00),
 (10, 'Ores', 'anonymous.png', 80.00),
