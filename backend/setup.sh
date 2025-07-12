@@ -29,6 +29,11 @@ if [ ! -f "artisan" ]; then
         # Run initial migrations
         echo "Running database migrations..."
         php artisan migrate --force
+
+        # Seed the database
+        echo "Seeding the database..."
+        php artisan db:seed --force
+
     else
         echo "ERROR: Failed to install Laravel into temporary directory!"
         exit 1
