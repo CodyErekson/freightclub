@@ -12,6 +12,8 @@ chown -R $USER_ID:$GROUP_ID /var/www/.composer
 if [ ! -f "artisan" ]; then
     echo "Laravel not found. Installing..."
     composer create-project --prefer-dist laravel/laravel . "11.*" --no-interaction
+    
+    # Fix ownership immediately after installation
     chown -R $USER_ID:$GROUP_ID .
     chmod -R 775 storage bootstrap/cache
     echo "Laravel installed successfully!"
@@ -22,7 +24,7 @@ fi
 # Install additional dependencies for MQTT
 composer require php-mqtt/client
 
-# Ensure all files are owned by the current user
+# Ensure all files are owned by the current user (final safety check)
 chown -R $USER_ID:$GROUP_ID .
 
 # Start PHP-FPM

@@ -36,6 +36,9 @@ RUN mkdir -p storage bootstrap/cache && \
     chown -R appuser:appuser storage bootstrap/cache && \
     chmod -R 775 storage bootstrap/cache
 
+# Ensure all files in the working directory are owned by appuser
+RUN chown -R appuser:appuser /var/www/html
+
 # Switch to the appuser
 USER appuser
 
