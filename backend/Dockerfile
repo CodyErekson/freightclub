@@ -6,6 +6,7 @@ WORKDIR /var/www/html
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
+    gosu \
     git \
     curl \
     libpng-dev \
@@ -24,26 +25,16 @@ RUN docker-php-ext-install pdo_mysql pdo_sqlite mbstring exif pcntl bcmath gd zi
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copy setup script
+# Copy application scripts
 COPY setup.sh /usr/local/bin/setup.sh
-RUN chmod +x /usr/local/bin/setup.sh
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/setup.sh /usr/local/bin/entrypoint.sh
 
-# Create a user with the same UID/GID as the host user
-ARG UID=1000
-ARG GID=1000
-RUN groupadd -g $GID appuser && useradd -u $UID -g $GID -m appuser
+# The entrypoint script will handle user switching and permissions.
+# We don't need to create the user here anymore.
 
-# Create necessary directories and set permissions
-RUN mkdir -p storage bootstrap/cache database && \
-    chown -R appuser:appuser storage bootstrap/cache database && \
-    chmod -R 775 storage bootstrap/cache database
+# Set the entrypoint
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
-# Ensure all files in the working directory are owned by appuser
-RUN chown -R appuser:appuser /var/www/html
-
-# Switch to the appuser
-USER appuser
-
-# Expose port 9000 and start setup script
-EXPOSE 9000
-CMD ["/usr/local/bin/setup.sh"] 
+# The command that the entrypoint will execute after setting up.
+CMD ["php-fpm"] 
