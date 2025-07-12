@@ -14,10 +14,12 @@ RUN apt-get update && apt-get install -y \
     sqlite3 \
     libsqlite3-dev \
     zip \
-    unzip
+    unzip \
+    libzip-dev \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions required by Laravel
-RUN docker-php-ext-install pdo_mysql pdo_sqlite mbstring exif pcntl bcmath gd
+RUN docker-php-ext-install pdo_mysql pdo_sqlite mbstring exif pcntl bcmath gd zip
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -31,10 +33,10 @@ ARG UID=1000
 ARG GID=1000
 RUN groupadd -g $GID appuser && useradd -u $UID -g $GID -m appuser
 
-# Set permissions for storage and bootstrap cache
-RUN mkdir -p storage bootstrap/cache && \
-    chown -R appuser:appuser storage bootstrap/cache && \
-    chmod -R 775 storage bootstrap/cache
+# Create necessary directories and set permissions
+RUN mkdir -p storage bootstrap/cache database && \
+    chown -R appuser:appuser storage bootstrap/cache database && \
+    chmod -R 775 storage bootstrap/cache database
 
 # Ensure all files in the working directory are owned by appuser
 RUN chown -R appuser:appuser /var/www/html
