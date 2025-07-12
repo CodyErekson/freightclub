@@ -71,4 +71,12 @@ CREATE INDEX IF NOT EXISTS idx_traders_city_id ON traders(city_id);
 CREATE INDEX IF NOT EXISTS idx_events_event_type_id ON events(event_type_id);
 CREATE INDEX IF NOT EXISTS idx_events_city_id ON events(city_id);
 CREATE INDEX IF NOT EXISTS idx_city_distances_from ON city_distances(from_city_id);
-CREATE INDEX IF NOT EXISTS idx_city_distances_to ON city_distances(to_city_id); 
+CREATE INDEX IF NOT EXISTS idx_city_distances_to ON city_distances(to_city_id);
+
+-- Player sprites table for character selection
+CREATE TABLE IF NOT EXISTS player_sprites (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL UNIQUE,
+    filename TEXT NOT NULL UNIQUE,
+    description TEXT
+); 
